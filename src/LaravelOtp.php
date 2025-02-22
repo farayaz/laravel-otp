@@ -4,14 +4,17 @@ namespace Farayaz\LaravelOtp;
 
 use Farayaz\LaravelOtp\Exceptions\LaravelOtpException;
 use Farayaz\LaravelOtp\Models\Otp as OtpModel;
+use InvalidArgumentException;
 
 class LaravelOtp
 {
     public function generate($identifier, $length = 6, $validity = 5)
     {
+        OtpModel::where('identifier', $identifier)->delete();
+
         $otp = OtpModel::create([
             'identifier' => $identifier,
-            'code' => random_int(900000, 999999),
+            'code' => $this->code($length),
             'expires_at' => now()->addMinutes($validity),
         ]);
 
@@ -46,5 +49,17 @@ class LaravelOtp
         }
 
         return $otp;
+    }
+
+    private function code($length)
+    {
+        if ($length <= 0) {
+            throw new InvalidArgumentException('Length must be greater than 0.');
+        }
+
+        $max = pow(10, $length) - 1;
+        $randomNumber = mt_rand(0, $max);
+
+        return str_pad($randomNumber, $length, '0', STR_PAD_LEFT);
     }
 }
