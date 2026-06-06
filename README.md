@@ -6,3 +6,10 @@
     <a href="https://packagist.org/packages/farayaz/laravel-otp"><img src="https://img.shields.io/packagist/l/farayaz/laravel-otp" alt="License"></a>
 </p>
 simple laravel-otp package
+
+## Compatibility
+
+- Laravel 10
+- Laravel 11
+- Laravel 12
+- Laravel 13
