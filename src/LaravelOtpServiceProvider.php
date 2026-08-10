@@ -6,11 +6,11 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelOtpServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
-        $this->app->bind('laravel-otp', function ($app) {
-            return new LaravelOtp;
-        });
+        $this->mergeConfigFrom(__DIR__.'/../config/laravel-otp.php', 'laravel-otp');
+
+        $this->app->singleton('laravel-otp', fn () => new LaravelOtp);
     }
 
     /**
@@ -19,5 +19,9 @@ class LaravelOtpServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        $this->publishes([
+            __DIR__.'/../config/laravel-otp.php' => config_path('laravel-otp.php'),
+        ], 'laravel-otp-config');
     }
 }
