@@ -15,6 +15,13 @@ class Otp extends Model
         'identifier',
         'code',
         'used',
+        'attempts',
         'expires_at',
+    ];
+
+    protected $casts = [
+        'used' => 'boolean',
+        'attempts' => 'integer',
+        'expires_at' => 'datetime',
     ];
 }
